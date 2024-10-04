@@ -1,9 +1,9 @@
 package br.unesp.springcondominio.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.unesp.springcondominio.entity.Visita;
 
-public interface VisitaRepository extends CrudRepository<Visita, Long>{
+public interface VisitaRepository extends JpaRepository<Visita, Integer>{
 
 }
