@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -33,7 +34,7 @@ public class Visita implements Serializable {
    @GeneratedValue(strategy = GenerationType.AUTO)
    private int id;
 
-   @OneToMany
+   @ManyToOne
    @JoinColumn(name = "visitante_id")
    private List<Visitante> visitante;
 

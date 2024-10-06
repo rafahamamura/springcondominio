@@ -2,17 +2,11 @@ package br.unesp.springcondominio.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Mockito.when;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -20,7 +14,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 
 import br.unesp.springcondominio.entity.Morador;
 import br.unesp.springcondominio.entity.TipoMorador;
@@ -28,6 +21,7 @@ import br.unesp.springcondominio.repository.MoradorRepository;
 import br.unesp.springcondominio.util.GeradorCpf;
 
 @SpringBootTest
+@SuppressWarnings("static-access")
 @TestMethodOrder(OrderAnnotation.class)
 public class MoradorServiceTest {
 
@@ -41,6 +35,7 @@ public class MoradorServiceTest {
    private static Long idMorador;
    private static String generatedCpf = GeradorCpf.gerarCPF();
    
+   @SuppressWarnings("deprecation")
    @Test
    @Order(1)
    @DisplayName("MoradorService.add(Morador)")
@@ -104,6 +99,7 @@ public class MoradorServiceTest {
 
    }
 
+   @SuppressWarnings("unused")
    @Test
    @Order(3)
    @DisplayName("MoradorService.deleteMoradorById(Long)")
