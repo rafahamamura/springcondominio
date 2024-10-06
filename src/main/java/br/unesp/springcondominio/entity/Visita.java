@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,7 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -31,11 +34,14 @@ public class Visita implements Serializable {
    private static final long serialVersionUID = 1L;
 
    @Id
+   @Column(name = "idVisita")
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private int id;
+   private int idVisita;
 
-   @ManyToOne
-   @JoinColumn(name = "visitante_id")
+   @ManyToMany(cascade = CascadeType.ALL)
+   @JoinTable(name = "visita_visitante",
+               joinColumns = @JoinColumn(name = "idVisita"),
+               inverseJoinColumns = @JoinColumn(name = "idVisitante"))
    private List<Visitante> visitante;
 
    @Temporal(TemporalType.TIMESTAMP)
