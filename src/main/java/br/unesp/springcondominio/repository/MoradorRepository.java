@@ -10,7 +10,5 @@ import java.util.List;
 @Repository
 public interface MoradorRepository extends JpaRepository<Morador, Long>{
 
-   void deleteById(Long id);
-
    List<Morador> findByCpf(String cpf);
 }

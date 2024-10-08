@@ -7,6 +7,7 @@ import br.unesp.springcondominio.entity.Visitante;
 import java.util.List;
 
 
+
 @Repository
 public interface VisitanteRepository extends JpaRepository<Visitante, Long>{
 

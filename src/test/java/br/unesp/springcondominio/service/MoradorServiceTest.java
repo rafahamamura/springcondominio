@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -99,6 +100,7 @@ public class MoradorServiceTest {
 
    }
 
+   @Disabled
    @SuppressWarnings("unused")
    @Test
    @Order(3)

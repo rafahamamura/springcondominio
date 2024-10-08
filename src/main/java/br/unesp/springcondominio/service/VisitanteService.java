@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.unesp.springcondominio.entity.Visitante;
 import br.unesp.springcondominio.repository.VisitanteRepository;
 
+@Service
 public class VisitanteService {
 
    @Autowired
@@ -46,9 +48,9 @@ public class VisitanteService {
 
     public long deleteVisitanteById(Long id){
       long rows = 0;
-      Optional<Visitante> Visitante = repository.findById(id);
-      if (Visitante.isPresent()){
-         repository.delete(Visitante.get());
+      Optional<Visitante> visitante = repository.findById(id);
+      if (visitante.isPresent()){
+         repository.delete(visitante.get());
          rows = repository.count();
       }
       return rows;
@@ -66,13 +68,13 @@ public class VisitanteService {
    }
 
    public List<Visitante> findVisitanteByCpf(String cpf){
-      List<Visitante> Visitante = null;
+      List<Visitante> visitante = null;
       if (repository!=null){
-         Visitante = new ArrayList<>();
-         Visitante = repository.findByCpf(cpf);
+         visitante = new ArrayList<>();
+         visitante = repository.findByCpf(cpf);
       }
 
-      return Visitante;
+      return visitante;
    }
 
 }
