@@ -7,5 +7,4 @@ import br.unesp.springcondominio.entity.Visita;
 
 @Repository
 public interface VisitaRepository extends JpaRepository<Visita, Long>{
-
 }

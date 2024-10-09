@@ -27,7 +27,7 @@ import br.unesp.springcondominio.util.GeradorCpf;
 public class MoradorServiceTest {
 
    @Autowired
-   MoradorService ms = new MoradorService();
+   MoradorService ms;
 
    @Autowired
    MoradorRepository mr;

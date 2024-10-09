@@ -44,4 +44,11 @@ public class VisitaService {
       }
       return rows;
    }
+
+   public Optional<Visita> findVisitaById(Long id){
+      if (repository.findById(id).isPresent()){
+         return repository.findById(id);
+      }
+      else return null;
+   }
 }
