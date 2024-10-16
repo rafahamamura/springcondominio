@@ -33,7 +33,7 @@ public class Visita implements Serializable {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    private List<Visitante> visitante;
 
    @Temporal(TemporalType.TIMESTAMP)

@@ -2,7 +2,9 @@ package br.unesp.springcondominio.service;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -41,16 +44,30 @@ public class AutorizacaoServiceTest {
    @Autowired
    MoradorService moradorService;
 
+   long createdID;
+
+   public AutorizacaoServiceTest(){
+      this.createdID = 0;
+   }
+
+   public void setCreatedID(long id){
+      this.createdID = id;
+   }
+
+   public long getCreatedID(){
+      return this.createdID;
+   }
+
    @Test
    @Order(1)
-   void criaAutorizacao_shouldreturnAutorizacaoEntity(){
-      //Create visita
+   void criaAutorizacao_shouldreturnAutorizacaoEntity() {
+      // Create visita
       Visita visita = new Visita();
       visita.setEntrada(new Date());
       visita.setSaida(new Date());
       visita.setStatus(StatusVisita.AGUARDANDO);
 
-      //Create visitante
+      // Create visitante
       Visitante v = new Visitante();
       v.setCpf(GeradorCpf.gerarCPF());
       v.setDataNascimento(new Date("1986/05/26"));
@@ -63,7 +80,7 @@ public class AutorizacaoServiceTest {
       visita.setVisitante(vList);
       visita = visitaService.save(visita);
 
-      //Create morador
+      // Create morador
       Morador m = new Morador();
       m.setCpf(GeradorCpf.gerarCPF());
       m.setDataNascimento(new Date("2000/11/11"));
@@ -79,27 +96,45 @@ public class AutorizacaoServiceTest {
       autorizacao.setStatus(StatusAutorizacao.PENDENTE);
       Autorizacao a = autorizacaoService.criaAutorizacao(autorizacao);
 
+      setCreatedID(a.getId());
+      System.out.println("Autorizacao ID created: " + getCreatedID());
+      System.out.println("====================================================");
+      System.out.println("");
+
       assertEquals(autorizacao, a);
    }
 
    @Test
    @Order(2)
-   void alteraStatus_shouldReturnTrue(){
-      long id = 102;
-      
-      Autorizacao autorizacao = autorizacaoService.findAutorizacaoById(id);
-      //Optional<Visita> v = visitaService.findVisitaById(autorizacao.getVisita().getId());
-      Visita v = autorizacao.getVisita();
-      //if (v.isPresent()){
-      //   visita = v.get();
-      //   System.out.println("VISITA:   " + v);
-      //   visita.setStatus(StatusVisita.AUTORIZADA);
-      //}
-      autorizacao.setVisita(v);
-      autorizacao.setStatus(StatusAutorizacao.APROVADA);
-      
-      Autorizacao a = autorizacaoService.atuailizaAutorizacao(autorizacao);
+   void alteraStatus_shouldAssertEquals() {
+      Autorizacao autorizacao = autorizacaoService.getLastAutorizacao();
+      long id = autorizacao.getId();
 
-      assertEquals(autorizacao, a);
+      System.out.println("ID Autorizacao to get: " + id);
+      System.out.println("====================================================");
+
+      Optional<Autorizacao> autorizacaoOptional = autorizacaoService.findAutorizacaoById(id);
+      if (autorizacaoOptional.isPresent()) {
+         autorizacao = autorizacaoOptional.get();
+         
+         //Visita v = autorizacao.getVisita();
+         Optional<Visita> vOptional = visitaService.findVisitaById(autorizacao.getVisita().getId());
+         Visita v = vOptional.get();
+         
+         v.setStatus(StatusVisita.AUTORIZADA);
+         v = visitaService.update(v);
+         
+         autorizacao.setVisita(v);
+         autorizacao.setStatus(StatusAutorizacao.APROVADA);
+
+         
+      }
+
+      Autorizacao response = autorizacaoService.atualizaAutorizacao(autorizacao);
+      //assertEquals(autorizacao, response);
+      assertEquals(autorizacao.getId(), response.getId());
+      assertEquals(autorizacao.getMorador(), response.getMorador());
+//      assertEquals(autorizacao.getVisita(), response.getVisita());
+      assertEquals(autorizacao.getStatus(), response.getStatus());
    }
 }

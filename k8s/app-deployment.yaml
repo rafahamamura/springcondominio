@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app-condominio
+  labels:
+    app: spring-app-condominio
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-app-condominio
+  template:
+    metadata:
+      labels:
+        app: spring-app-condominio
+    spec:
+      containers:
+      - name: spring-app-condominio
+        image: springio/springcondominio
+        imagePullPolicy: Never
+        ports:
+          - name: http
+            containerPort: 8080
+        resources:
+          limits:
+            cpu: 0.2
+            memory: "200Mi"
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: mysql-user-password
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name:  mysql-config-map
+              key: mysql-server
+        - name: MYSQL_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name:  mysql-config-map
+              key: mysql-database-name
+        - name: MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config-map
+              key: mysql-user-username
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app-condominio
+  labels:
+    app: spring-app-condominio
+spec:
+  type: LoadBalancer
+  selector:
+    app: spring-app-condominio
+  ports:
+  - protocol: TCP
+    name: http
+    port: 8080
+    targetPort: 8080
+    nodePort: 30000

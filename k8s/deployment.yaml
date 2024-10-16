@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-boot-condominio
+  name: spring-boot-condominio
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-boot-condominio
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring-boot-condominio
+    spec:
+      containers:
+      - name: spring-api
+        image: springio/springcondominio:latest
+        imagePullPolicy: Never
+        resources: {}
+status: {}

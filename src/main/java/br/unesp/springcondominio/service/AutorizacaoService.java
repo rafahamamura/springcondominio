@@ -1,6 +1,7 @@
 package br.unesp.springcondominio.service;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,28 +16,28 @@ public class AutorizacaoService {
    @Autowired
    AutorizacaoRepository repository;
 
-   public Autorizacao criaAutorizacao(Autorizacao autorizacao) {
+   public Autorizacao criaAutorizacao(Autorizacao entity) {
+      repository.flush();
+      Autorizacao persistedEntity = null;
       if (repository != null) {
-         autorizacao = repository.save(autorizacao);
-      } else {
-         autorizacao = null;
+         persistedEntity = repository.save(entity);
       }
 
-      return autorizacao;
+      return persistedEntity;
    }
 
-   public Autorizacao atuailizaAutorizacao(Autorizacao autorizacao) {
+   public Autorizacao atualizaAutorizacao(Autorizacao entity) {
+      repository.flush();
+      Autorizacao persistedEntity = null;
       if (repository != null) {
-         autorizacao = repository.save(autorizacao);
-      } else {
-         autorizacao = null;
+         persistedEntity = repository.save(entity);
       }
 
-      return autorizacao;
+      return persistedEntity;
    }
 
    public boolean alterarStatus(Autorizacao autorizacao, StatusAutorizacao status) {
-
+      repository.flush();
       autorizacao.setStatus(status);
 
       if (repository != null) {
@@ -46,13 +47,25 @@ public class AutorizacaoService {
          return false;
    }
 
-   public Autorizacao findAutorizacaoById(Long id) {
+   public Optional<Autorizacao> findAutorizacaoById(Long id) {
+      repository.flush();
       Optional<Autorizacao> a = repository.findById(id);
-      if (a.isPresent()) {
-         Autorizacao autorizacao = a.get();
-         return autorizacao;
-      } else {
-         return null;
-      }
+      return a;
    }
+
+   public Autorizacao getLastAutorizacao(){
+      return repository.getTopByOrderByIdDesc();
+   }
+
+   public List<Autorizacao> listarAutorizacoes() {
+      return repository.findAll();
+  }
+
+  public Autorizacao salvarAutorizacao(Autorizacao autorizacao) {
+      return repository.save(autorizacao);
+  }
+
+  public void deletarAutorizacao(Long id) {
+      repository.deleteById(id);
+  }
 }
